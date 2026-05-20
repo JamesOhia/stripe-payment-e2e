@@ -1,0 +1,25 @@
+node_modules/
+.env
+.env.local
+
+# Playwright
+test-results/
+playwright-report/
+allure-results/
+allure-report/
+
+# Auth storage (do not commit credentials)
+auth/dashboard.json
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+
+# Logs
+*.log
+npm-debug.log*
