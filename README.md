@@ -19,7 +19,7 @@ The workflow covers happy paths (success card), card declines (generic, insuffic
 ```
 stripe-payment-e2e/
 ├── .github/workflows/playwright.yml   # CI pipeline (push/PR), Allure → Pages + artifact
-├── auth/                              # Persisted Stripe Dashboard storage state (gitignored)
+├── .auth/                             # Persisted Stripe Dashboard storage state (gitignored)
 ├── data/                              # JSON test data — single source of truth
 │   ├── test-cards.json
 │   ├── test-amounts.json
@@ -109,6 +109,26 @@ Configure these under **Settings → Secrets and variables → Actions → New r
 | `STRIPE_PUBLISHABLE_KEY` | Same page |
 | `STRIPE_DASHBOARD_EMAIL` | Email used to sign in to the test Stripe account |
 | `STRIPE_DASHBOARD_PASSWORD` | Password for the same account |
+| `STRIPE_AUTH_STATE` | Generated locally by running `npm run save-auth` (see below) |
+
+### Capturing the dashboard session (`STRIPE_AUTH_STATE`)
+
+Stripe's anti-bot protection blocks automated logins in CI. The workaround is a one-time manual login that captures and reuses session cookies:
+
+```bash
+npm run save-auth
+# A real Chrome window opens — log in manually and press ENTER.
+# The script prints a base64 string. Paste it as STRIPE_AUTH_STATE.
+```
+
+If you already captured a session but got a "Value is too large" error from GitHub (happens when other browser tabs were open), run:
+
+```bash
+npm run trim-auth
+# Filters the saved file to Stripe cookies only and prints a smaller base64.
+```
+
+Sessions expire after ~30 days. Re-run `npm run save-auth` when `auth.setup.js` reports "session expired".
 
 
 ### Enabling GitHub Pages
@@ -126,7 +146,7 @@ The report is also uploaded as a downloadable workflow artifact (`allure-report`
 2. Two-step authentication is disabled on the test account. Also due to Stripe Captcha anti-bot system. The login is ran using your real browser and not playwright browser inorder to bypass the captcha and anti-bot system from strip 
 3. Webhook verification uses Stripe's `/v1/events` API rather than a public HTTPS endpoint or `stripe-cli` forwarding. This is the cleanest and most reliable approach for CI environments and produces equivalent verification fidelity — every event Stripe would have delivered is recorded in `/v1/events`.
 4. The Stripe Dashboard UI is heavyweight and its internal selectors change frequently. The page objects favour role/label/placeholder locators and direct deep-links (`/test/payments/:id`) over fragile row clicks.
-5. Raw card data is acceptable in test mode (Stripe disallows it in production). PaymentMethod creation here uses the raw-card endpoint for assessment simplicity.
+5. PaymentMethod creation uses Stripe's published test tokens (`tok_visa`, `tok_mastercard`, etc.) rather than raw card numbers. This works on all Stripe test accounts without any account-level enablement.
 
 
 ## Reports
