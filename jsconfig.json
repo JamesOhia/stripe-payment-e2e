@@ -15,16 +15,7 @@
     "forceConsistentCasingInFileNames": true,
     "skipLibCheck": true,
     "noEmit": true,
-    "allowJs": true,
-    "ignoreDeprecations": "6.0",
-    "baseUrl": ".",
-    "paths": {
-      "@pages/*": ["./src/pages/*"],
-      "@api/*": ["./src/api/*"],
-      "@utils/*": ["./src/utils/*"],
-      "@fixtures/*": ["./src/fixtures/*"],
-      "@data/*": ["./data/*"]
-    }
+    "allowJs": true
   },
   "include": [
     "src/**/*.js",

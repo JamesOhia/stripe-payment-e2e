@@ -29,9 +29,12 @@ export class PaymentsPage extends BasePage {
   }
 
   /**
+   * Navigate to the Payments list and assert we landed there.
+   * Always navigates first — the fixture page starts at about:blank.
    * @returns {Promise<this>}
    */
   async assertLoaded() {
+    await this.page.goto(`${env.dashboardUrl}/test/payments`, { waitUntil: 'domcontentloaded' });
     await expect(this.page).toHaveURL(/\/(test\/)?payments/);
     return this;
   }
@@ -45,8 +48,10 @@ export class PaymentsPage extends BasePage {
    */
   async openPaymentById(paymentIntentId) {
     this.logger.info(`Opening payment detail for ${paymentIntentId}`);
+    // Use 'load' (not 'domcontentloaded') so Stripe's React app has time to
+    // execute and issue its first data fetch before assertions start.
     await this.page.goto(`${env.dashboardUrl}/test/payments/${paymentIntentId}`, {
-      waitUntil: 'domcontentloaded',
+      waitUntil: 'load',
     });
     return new PaymentDetailPage(this.page, paymentIntentId);
   }

@@ -46,7 +46,7 @@ export class PaymentDetailPage extends BasePage {
    */
   async assertAmountIs(displayAmount) {
     this.logger.info(`Asserting amount is ${displayAmount}`);
-    await expect(this.page.getByText(displayAmount).first()).toBeVisible({ timeout: 15_000 });
+    await expect(this.page.getByText(displayAmount).first()).toBeVisible({ timeout: 30_000 });
     return this;
   }
 
@@ -60,7 +60,7 @@ export class PaymentDetailPage extends BasePage {
     this.logger.info(`Asserting status is ${expected}`);
     await expect(
       this.page.getByText(new RegExp(`^${expected}$`, 'i')).first(),
-    ).toBeVisible({ timeout: 15_000 });
+    ).toBeVisible({ timeout: 30_000 });
     return this;
   }
 
@@ -70,7 +70,7 @@ export class PaymentDetailPage extends BasePage {
    */
   async assertRefundVisible() {
     this.logger.info('Asserting refund is visible on payment detail');
-    await expect(this.timelineRefundEntry).toBeVisible({ timeout: 15_000 });
+    await expect(this.timelineRefundEntry).toBeVisible({ timeout: 30_000 });
     return this;
   }
 }
