@@ -22,9 +22,9 @@ export class PaymentDetailPage extends BasePage {
     // User-first locators
     this.amountHeading = page.getByRole('heading').first();
     this.statusBadge = page
-      .getByText(/^(Succeeded|Refunded|Partially refunded|Failed|Pending)$/i)
+      .getByText(/^(Succeeded|Refunded|Partial refund|Failed|Pending)$/i)
       .first();
-    this.refundedBadge = page.getByText(/^(Refunded|Partially refunded)$/i).first();
+    this.refundedBadge = page.getByText(/^(Refunded|Partial refund)$/i).first();
     this.timelineRefundEntry = page.getByText(/refund(ed)?/i).first();
   }
 
@@ -53,7 +53,7 @@ export class PaymentDetailPage extends BasePage {
   /**
    * Verify the payment status badge matches the expected status.
    *
-   * @param {'Succeeded'|'Refunded'|'Partially refunded'|'Failed'|'Pending'} expected
+   * @param {'Succeeded'|'Refunded'|'Partial refund'|'Failed'|'Pending'} expected
    * @returns {Promise<this>}
    */
   async assertStatusIs(expected) {

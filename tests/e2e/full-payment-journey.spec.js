@@ -90,7 +90,7 @@ test.describe('Stripe E2E — Full payment journey (API + Dashboard UI)', () => 
       const detail = await paymentsPage.openPaymentById(intentId);
       await detail.assertLoaded();
       await detail.assertAmountIs(display);
-      await detail.assertStatusIs('Partially refunded');
+      await detail.assertStatusIs('Partial refund');
       await detail.assertRefundVisible();
     });
   });
