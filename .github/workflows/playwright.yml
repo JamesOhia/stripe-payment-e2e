@@ -59,6 +59,11 @@ jobs:
           STRIPE_PUBLISHABLE_KEY: ${{ secrets.STRIPE_PUBLISHABLE_KEY }}
           STRIPE_DASHBOARD_EMAIL: ${{ secrets.STRIPE_DASHBOARD_EMAIL }}
           STRIPE_DASHBOARD_PASSWORD: ${{ secrets.STRIPE_DASHBOARD_PASSWORD }}
+          # Base64-encoded auth/dashboard.json captured via `npm run save-auth`.
+          # auth.setup.js decodes this at runtime — no CAPTCHA needed in CI.
+          # Refresh when Stripe sessions expire: re-run save-auth locally,
+          # copy the printed base64 into this secret, re-run the workflow.
+          STRIPE_AUTH_STATE: ${{ secrets.STRIPE_AUTH_STATE }}
           CI: 'true'
         run: npx playwright test
         continue-on-error: true

@@ -4,6 +4,8 @@
   "description": "End-to-end automated tests for Stripe Sandbox payment workflow using Playwright (JavaScript)",
   "type": "module",
   "scripts": {
+    "save-auth": "node scripts/save-auth.js",
+    "trim-auth": "node scripts/trim-auth.js",
     "test": "playwright test",
     "test:api": "playwright test --project=api",
     "test:ui": "playwright test --project=ui",

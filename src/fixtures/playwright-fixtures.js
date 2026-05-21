@@ -19,11 +19,12 @@ import { PaymentsPage } from '../pages/PaymentsPage.js';
  * Centralised Playwright fixtures so every test gets a fresh, properly
  * disposed API client + Page Objects with one import.
  *
- *   import { test, expect } from '@fixtures/playwright-fixtures.js';
+ *   import { test, expect } from '../../src/fixtures/playwright-fixtures.js';
  *
  * Keeps spec files clean — no manual `new StripeApiClient()` per test.
  */
-export const test = base.extend(/** @type {import('@playwright/test').Fixtures<TestFixtures>} */ ({
+export const test = base.extend(
+  /** @type {import('@playwright/test').Fixtures<TestFixtures, {}, import('@playwright/test').PlaywrightTestArgs>} */ ({
   stripeApi: async ({}, use) => {
     const client = new StripeApiClient();
     await use(client);
@@ -45,6 +46,7 @@ export const test = base.extend(/** @type {import('@playwright/test').Fixtures<T
   paymentsPage: async ({ page }, use) => {
     await use(new PaymentsPage(page));
   },
-}));
+}),
+);
 
 export { expect };

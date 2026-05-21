@@ -4,6 +4,7 @@
     "expMonth": 12,
     "expYear": 2030,
     "cvc": "123",
+    "token": "tok_visa",
     "description": "Visa — always succeeds"
   },
   "successMastercard": {
@@ -11,6 +12,7 @@
     "expMonth": 12,
     "expYear": 2030,
     "cvc": "123",
+    "token": "tok_mastercard",
     "description": "Mastercard — always succeeds"
   },
   "requiresAuthentication": {
@@ -18,6 +20,7 @@
     "expMonth": 12,
     "expYear": 2030,
     "cvc": "123",
+    "token": "tok_threeDSecure2Required",
     "description": "Visa — triggers 3D Secure 2 authentication"
   },
   "declinedGeneric": {
@@ -25,6 +28,7 @@
     "expMonth": 12,
     "expYear": 2030,
     "cvc": "123",
+    "token": "tok_chargeDeclined",
     "description": "Visa — declined with generic decline code"
   },
   "declinedInsufficientFunds": {
@@ -32,6 +36,7 @@
     "expMonth": 12,
     "expYear": 2030,
     "cvc": "123",
+    "token": "tok_chargeDeclinedInsufficientFunds",
     "description": "Visa — declined with insufficient_funds"
   },
   "declinedExpired": {
@@ -39,6 +44,7 @@
     "expMonth": 12,
     "expYear": 2030,
     "cvc": "123",
+    "token": "tok_chargeDeclinedExpiredCard",
     "description": "Visa — declined with expired_card"
   },
   "declinedIncorrectCvc": {
@@ -46,6 +52,7 @@
     "expMonth": 12,
     "expYear": 2030,
     "cvc": "123",
+    "token": "tok_chargeDeclinedIncorrectCvc",
     "description": "Visa — declined with incorrect_cvc"
   }
 }

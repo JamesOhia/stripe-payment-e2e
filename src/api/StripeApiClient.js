@@ -17,10 +17,12 @@ import { Logger } from '../utils/logger.js';
 
 /**
  * @typedef {Object} PaymentMethodCardParams
- * @property {string} number
- * @property {number} expMonth
- * @property {number} expYear
- * @property {string} cvc
+ * @property {string} [token] - Stripe test token (e.g. tok_visa). Preferred over raw card data.
+ * @property {string} [number]
+ * @property {number} [expMonth]
+ * @property {number} [expYear]
+ * @property {string} [cvc]
+ * @property {string} [description]
  */
 
 /**
@@ -54,7 +56,10 @@ export class StripeApiClient {
   async _ctx() {
     if (!this.context) {
       this.context = await playwrightRequest.newContext({
-        baseURL: this.baseUrl,
+        // No baseURL — paths are always built as full URLs via _post/_get to
+        // avoid Playwright's URL resolution stripping the /v1 path segment when
+        // a leading-slash path like /payment_intents is combined with a baseURL
+        // of https://api.stripe.com/v1 (no trailing slash).
         extraHTTPHeaders: {
           Authorization: `Bearer ${this.secretKey}`,
           'Stripe-Version': this.apiVersion,
@@ -96,7 +101,7 @@ export class StripeApiClient {
     const ctx = await this._ctx();
     const params = this._toFormParams(form);
     this.logger.info(`POST ${path} ${JSON.stringify(params)}`);
-    const res = await ctx.post(path, { form: params });
+    const res = await ctx.post(`${this.baseUrl}${path}`, { form: params });
     return this._unwrap(res);
   }
 
@@ -108,7 +113,7 @@ export class StripeApiClient {
   async _get(path, query = {}) {
     const ctx = await this._ctx();
     this.logger.info(`GET ${path} ${JSON.stringify(query)}`);
-    const res = await ctx.get(path, { params: query });
+    const res = await ctx.get(`${this.baseUrl}${path}`, { params: query });
     return this._unwrap(res);
   }
 
@@ -143,15 +148,17 @@ export class StripeApiClient {
    * @returns {Promise<StripeResponse>}
    */
   async createCardPaymentMethod(card) {
-    return this._post('/payment_methods', {
-      type: 'card',
-      card: {
-        number: card.number,
-        exp_month: card.expMonth,
-        exp_year: card.expYear,
-        cvc: card.cvc,
-      },
-    });
+    // Use a test token when available — Stripe requires raw card data APIs to be
+    // explicitly enabled on the account, but test tokens work on all test accounts.
+    const cardBody = card.token
+      ? { token: card.token }
+      : {
+          number: card.number,
+          exp_month: card.expMonth,
+          exp_year: card.expYear,
+          cvc: card.cvc,
+        };
+    return this._post('/payment_methods', { type: 'card', card: cardBody });
   }
 
   // ===============================================================

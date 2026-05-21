@@ -72,7 +72,7 @@ export default defineConfig({
       dependencies: ['setup'],
       use: {
         ...devices['Desktop Chrome'],
-        storageState: 'auth/dashboard.json',
+        storageState: '.auth/stripe-auth-state.json',
       },
     },
     {
@@ -81,7 +81,7 @@ export default defineConfig({
       dependencies: ['setup'],
       use: {
         ...devices['Desktop Chrome'],
-        storageState: 'auth/dashboard.json',
+        storageState: '.auth/stripe-auth-state.json',
       },
     },
   ],

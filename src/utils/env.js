@@ -27,8 +27,8 @@ function required(name) {
  * @property {string} stripeApiBaseUrl
  * @property {string} stripeApiVersion
  * @property {string} dashboardUrl
- * @property {string} dashboardEmail
- * @property {string} dashboardPassword
+ * @property {string|undefined} dashboardEmail
+ * @property {string|undefined} dashboardPassword
  */
 
 /** @type {EnvConfig} */
@@ -38,6 +38,8 @@ export const env = {
   stripeApiBaseUrl: process.env.STRIPE_API_BASE_URL ?? 'https://api.stripe.com/v1',
   stripeApiVersion: process.env.STRIPE_API_VERSION ?? '2024-12-18.acacia',
   dashboardUrl: process.env.STRIPE_DASHBOARD_URL ?? 'https://dashboard.stripe.com',
-  dashboardEmail: required('STRIPE_DASHBOARD_EMAIL'),
-  dashboardPassword: required('STRIPE_DASHBOARD_PASSWORD'),
+  // Optional: only needed if using the LoginPage automated-login path.
+  // Normal test runs use storage state (auth.setup.js) — no credentials required.
+  dashboardEmail: process.env.STRIPE_DASHBOARD_EMAIL || undefined,
+  dashboardPassword: process.env.STRIPE_DASHBOARD_PASSWORD || undefined,
 };

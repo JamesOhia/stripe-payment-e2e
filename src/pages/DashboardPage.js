@@ -20,10 +20,20 @@ export class DashboardPage extends BasePage {
   }
 
   /**
+   * Navigate to the dashboard home and wait for it to load.
+   * @returns {Promise<this>}
+   */
+  async goto() {
+    await super.goto(`${env.dashboardUrl}/dashboard`);
+    return this;
+  }
+
+  /**
    * Assert that the dashboard has finished loading and is in test mode.
    * @returns {Promise<this>}
    */
   async assertLoaded() {
+    await this.goto();
     await expect(this.page).toHaveURL(/dashboard\.stripe\.com/);
     return this;
   }

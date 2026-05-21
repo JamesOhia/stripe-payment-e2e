@@ -10,6 +10,7 @@ allure-report/
 
 # Auth storage (do not commit credentials)
 auth/dashboard.json
+.auth/
 
 # OS
 .DS_Store

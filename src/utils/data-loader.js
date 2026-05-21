@@ -28,10 +28,11 @@ export function loadJson(fileName) {
 
 /**
  * @typedef {Object} TestCard
- * @property {string} number
- * @property {number} expMonth
- * @property {number} expYear
- * @property {string} cvc
+ * @property {string} [token] - Stripe test token (e.g. tok_visa); preferred over raw card fields
+ * @property {string} [number]
+ * @property {number} [expMonth]
+ * @property {number} [expYear]
+ * @property {string} [cvc]
  * @property {string} description
  */
 

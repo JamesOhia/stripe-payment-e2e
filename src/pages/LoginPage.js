@@ -73,9 +73,16 @@ export class LoginPage extends BasePage {
 
   /**
    * Convenience: log in using the environment-configured account.
+   * Requires STRIPE_DASHBOARD_EMAIL and STRIPE_DASHBOARD_PASSWORD to be set.
    * @returns {Promise<DashboardPage>}
    */
   async loginWithEnvCredentials() {
+    if (!env.dashboardEmail || !env.dashboardPassword) {
+      throw new Error(
+        'STRIPE_DASHBOARD_EMAIL and STRIPE_DASHBOARD_PASSWORD must be set to use loginWithEnvCredentials. ' +
+          'For bot-detection-safe login, use `npm run save-auth` instead.'
+      );
+    }
     return this.loginWith({ email: env.dashboardEmail, password: env.dashboardPassword });
   }
 }
